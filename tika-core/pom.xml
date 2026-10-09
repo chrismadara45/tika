@@ -119,14 +119,6 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
     </dependency>
-    <!-- IFT3913 tache 2 : dependances requises par ChatUniTest -->
-    <dependency>
-      <groupId>io.github.ZJU-ACES-ISE</groupId>
-      <artifactId>chatunitest-starter</artifactId>
-      <version>1.4.0</version>
-      <type>pom</type>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <build>
@@ -153,6 +145,9 @@
             <param>org.apache.tika.io.EndianUtilsTest</param>
             <param>org.apache.tika.io.FilenameUtilsTest</param>
             <param>org.apache.tika.mime.MediaTypeTest</param>
+            <param>org.apache.tika.io.EndianUtilsGeneratedTest</param>
+            <param>org.apache.tika.io.FilenameUtilsGeneratedTest</param>
+            <param>org.apache.tika.mime.MediaTypeGeneratedTest</param>
           </targetTests>
           <timestampedReports>false</timestampedReports>
           <outputFormats>
@@ -253,6 +248,7 @@
         <artifactId>apache-rat-plugin</artifactId>
         <configuration>
           <inputExcludes>
+            <inputExclude>chatunitest-tests/**</inputExclude>
             <inputExclude>src/test/resources/org/apache/tika/**</inputExclude>
             <inputExclude>src/main/resources/org/apache/tika/language/*.ngp</inputExclude>
             <inputExclude>src/main/resources/org/apache/tika/detect/*.nnmodel</inputExclude>
