@@ -1,0 +1,74 @@
+{
+  "method0": {
+    "methodName": "normalize",
+    "signature": "normalize(String)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method1": {
+    "methodName": "getName",
+    "signature": "getName(String)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method10": {
+    "methodName": "calculateExtension",
+    "signature": "calculateExtension(Metadata, String)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method11": {
+    "methodName": "lookupExtension",
+    "signature": "lookupExtension(String)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method2": {
+    "methodName": "getSuffixFromPath",
+    "signature": "getSuffixFromPath(String)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method3": {
+    "methodName": "getSanitizedEmbeddedFileName",
+    "signature": "getSanitizedEmbeddedFileName(Metadata, String, int)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method4": {
+    "methodName": "getSanitizedEmbeddedFilePath",
+    "signature": "getSanitizedEmbeddedFilePath(Metadata, String, int)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method5": {
+    "methodName": "resolveWithin",
+    "signature": "resolveWithin(Path, String)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method6": {
+    "methodName": "getPrefixLength",
+    "signature": "getPrefixLength(String)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method7": {
+    "methodName": "removeProtocol",
+    "signature": "removeProtocol(String)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method8": {
+    "methodName": "getEmbeddedPath",
+    "signature": "getEmbeddedPath(Metadata)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  },
+  "method9": {
+    "methodName": "getEmbeddedName",
+    "signature": "getEmbeddedName(Metadata)",
+    "className": "FilenameUtils",
+    "packageName": "org.apache.tika.io"
+  }
+}
