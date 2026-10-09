@@ -1,0 +1,20 @@
+{
+  "attempt0": {
+    "testClassName": "EndianUtils_getShortBE_16_0_Test",
+    "fullName": "org.apache.tika.io.EndianUtils_getShortBE_16_0_Test",
+    "path": "/Users/alexchris/tika/tika-core/chatunitest-tests/org/apache/tika/io/EndianUtils_getShortBE_16_0_Test.java",
+    "className": "EndianUtils",
+    "packageName": "org.apache.tika.io",
+    "methodName": "getShortBE",
+    "methodSig": "getShortBE(byte[])"
+  },
+  "attempt1": {
+    "testClassName": "EndianUtils_getShortBE_16_1_Test",
+    "fullName": "org.apache.tika.io.EndianUtils_getShortBE_16_1_Test",
+    "path": "/Users/alexchris/tika/tika-core/chatunitest-tests/org/apache/tika/io/EndianUtils_getShortBE_16_0_Test.java",
+    "className": "EndianUtils",
+    "packageName": "org.apache.tika.io",
+    "methodName": "getShortBE",
+    "methodSig": "getShortBE(byte[])"
+  }
+}

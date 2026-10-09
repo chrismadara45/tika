@@ -1,0 +1,20 @@
+{
+  "attempt0": {
+    "testClassName": "MediaType_getBaseType_12_0_Test",
+    "fullName": "org.apache.tika.mime.MediaType_getBaseType_12_0_Test",
+    "path": "/Users/alexchris/tika/tika-core/chatunitest-tests/org/apache/tika/mime/MediaType_getBaseType_12_0_Test.java",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime",
+    "methodName": "getBaseType",
+    "methodSig": "getBaseType()"
+  },
+  "attempt1": {
+    "testClassName": "MediaType_getBaseType_12_1_Test",
+    "fullName": "org.apache.tika.mime.MediaType_getBaseType_12_1_Test",
+    "path": "/Users/alexchris/tika/tika-core/chatunitest-tests/org/apache/tika/mime/MediaType_getBaseType_12_0_Test.java",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime",
+    "methodName": "getBaseType",
+    "methodSig": "getBaseType()"
+  }
+}

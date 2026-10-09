@@ -1,0 +1,164 @@
+{
+  "method0": {
+    "methodName": "application",
+    "signature": "application(String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method1": {
+    "methodName": "audio",
+    "signature": "audio(String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method10": {
+    "methodName": "unquote",
+    "signature": "unquote(String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method11": {
+    "methodName": "union",
+    "signature": "union(Map, Map)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method12": {
+    "methodName": "getBaseType",
+    "signature": "getBaseType()",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method13": {
+    "methodName": "getType",
+    "signature": "getType()",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method14": {
+    "methodName": "getSubtype",
+    "signature": "getSubtype()",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method15": {
+    "methodName": "hasParameters",
+    "signature": "hasParameters()",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method16": {
+    "methodName": "getParameters",
+    "signature": "getParameters()",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method17": {
+    "methodName": "toString",
+    "signature": "toString()",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method18": {
+    "methodName": "equals",
+    "signature": "equals(Object)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method19": {
+    "methodName": "hashCode",
+    "signature": "hashCode()",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method2": {
+    "methodName": "image",
+    "signature": "image(String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method20": {
+    "methodName": "compareTo",
+    "signature": "compareTo(MediaType)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method21": {
+    "methodName": "MediaType",
+    "signature": "MediaType(String, String, Map)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method22": {
+    "methodName": "MediaType",
+    "signature": "MediaType(String, String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method23": {
+    "methodName": "MediaType",
+    "signature": "MediaType(String, int)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method24": {
+    "methodName": "MediaType",
+    "signature": "MediaType(MediaType, Map)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method25": {
+    "methodName": "MediaType",
+    "signature": "MediaType(MediaType, String, String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method26": {
+    "methodName": "MediaType",
+    "signature": "MediaType(MediaType, Charset)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method3": {
+    "methodName": "text",
+    "signature": "text(String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method4": {
+    "methodName": "video",
+    "signature": "video(String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method5": {
+    "methodName": "set",
+    "signature": "set(MediaType[])",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method6": {
+    "methodName": "set",
+    "signature": "set(String[])",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method7": {
+    "methodName": "parse",
+    "signature": "parse(String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method8": {
+    "methodName": "isSimpleName",
+    "signature": "isSimpleName(String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  },
+  "method9": {
+    "methodName": "parseParameters",
+    "signature": "parseParameters(String)",
+    "className": "MediaType",
+    "packageName": "org.apache.tika.mime"
+  }
+}

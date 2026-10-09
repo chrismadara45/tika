@@ -1,0 +1,22 @@
+[
+  {
+    "attempt": 0,
+    "round": 0,
+    "prompt": [
+      {
+        "role": "system",
+        "content": "Please help me generate a whole JUnit test for a focal method in a focal class.\nI will provide the following information of the focal method:\n1. Required dependencies to import.\n2. The focal class signature.\n3. Source code of the focal method.\n4. Signatures of r methods and fields in the class.\nI will provide followotheing brief information if the focal method has dependencies:\n1. Signatures of dependent classes.\n2. Signatures of dependent methods and fields in the dependent classes.\nI need you to create a whole unit test using JUnit 5, ensuring optimal branch and line coverage. Compile without errors, and use reflection to invoke private methods. No additional explanations required."
+      },
+      {
+        "role": "user",
+        "content": "The focal method is `getShortBE(byte[], int)` in the focal class `EndianUtils`, and their information is\n```org.apache.tika.io\nimport java.io.IOException;\nimport java.io.InputStream;\nimport org.apache.tika.exception.TikaException;\npublic class EndianUtils {\nprivate static final int LONG_SIZE = 8;\npublic static short getShortBE(byte[] data, int offset) {\n        return (short) getUShortBE(data, offset);\n    }\n}```.\n    The brief information of dependent class `org.apache.tika.io.EndianUtils` is\n    ```org.apache.tika.io\nimport java.io.IOException;\nimport java.io.InputStream;\nimport org.apache.tika.exception.TikaException;\npublic class EndianUtils {\nprivate static final int LONG_SIZE = 8;\n\npublic static int getUShortBE(byte[] data, int offset) {\n        int b0 = data[offset] & 0xFF;\n        int b1 = data[offset + 1] & 0xFF;\n        return (b0 << 8) + (b1);\n    }\n}```.\n"
+      }
+    ],
+    "response": "Sure! Below is a JUnit test for the `getShortBE` method in the `EndianUtils` class. This test covers all branches and lines of the method, ensuring optimal branch and line coverage.\n\n```java\nimport org.apache.tika.io.EndianUtils;\nimport org.junit.jupiter.api.Test;\n\nimport java.io.IOException;\nimport java.io.InputStream;\nimport org.apache.tika.exception.TikaException;\n\npublic class EndianUtilsTest {\n\n    @Test\n    public void testGetShortBE() throws IOException, TikaException {\n        // Test data\n        byte[] testData = {0x12, 0x34};\n        int offset = 0;\n\n        // Expected result\n        short expectedResult = (short) (testData[0] << 8 | testData[1]);\n\n        // Actual result\n        short actualResult = EndianUtils.getShortBE(testData, offset);\n\n        // Assert the expected result matches the actual result\n        assertEquals(expectedResult, actualResult);\n    }\n}\n```\n\n### Explanation:\n1. **Test Data**: We create a byte array `testData` with values `{0x12, 0x34}` and an offset of `0`.\n2. **Expected Result**: We calculate the expected result by shifting the first byte to the left by 8 bits and then adding the second byte.\n3. **Actual Result**: We call the `getShortBE` method with the test data and offset, and store the result in `actualResult`.\n4. **Assert**: We use `assertEquals` to verify that the actual result matches the expected result.\n\nThis test covers all branches and lines of the `getShortBE` method, ensuring optimal branch and line coverage.",
+    "promptToken": 381,
+    "responseToken": 353,
+    "hasCode": true,
+    "code": "package org.apache.tika.io;\n\nimport org.apache.tika.io.EndianUtils;\nimport java.io.IOException;\nimport java.io.InputStream;\nimport org.apache.tika.exception.TikaException;\nimport org.mockito.*;\nimport org.junit.jupiter.api.*;\nimport static org.mockito.Mockito.*;\nimport static org.junit.jupiter.api.Assertions.*;\nimport org.junit.jupiter.api.extension.ExtendWith;\nimport org.mockito.junit.jupiter.MockitoExtension;\n\npublic class EndianUtils_getShortBE_17_0_Test {\n\n    @Test\n    public void testGetShortBE() throws IOException, TikaException {\n        // Test data\n        byte[] testData = { 0x12, 0x34 };\n        int offset = 0;\n        // Expected result\n        short expectedResult = (short) (testData[0] << 8 | testData[1]);\n        // Actual result\n        short actualResult = EndianUtils.getShortBE(testData, offset);\n        // Assert the expected result matches the actual result\n        assertEquals(expectedResult, actualResult);\n    }\n}\n",
+    "hasError": false
+  }
+]
