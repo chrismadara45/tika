@@ -148,6 +148,9 @@
             <param>org.apache.tika.io.EndianUtilsGeneratedTest</param>
             <param>org.apache.tika.io.FilenameUtilsGeneratedTest</param>
             <param>org.apache.tika.mime.MediaTypeGeneratedTest</param>
+            <param>org.apache.tika.io.EndianUtilsManualTest</param>
+            <param>org.apache.tika.io.FilenameUtilsManualTest</param>
+            <param>org.apache.tika.mime.MediaTypeManualTest</param>
           </targetTests>
           <timestampedReports>false</timestampedReports>
           <outputFormats>
