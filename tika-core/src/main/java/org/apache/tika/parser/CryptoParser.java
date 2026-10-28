@@ -73,7 +73,10 @@ public abstract class CryptoParser extends DelegatingParser {
                       ParseContext context) throws IOException, SAXException, TikaException {
         try {
             Cipher cipher;
-            if (provider != null) {
+            if (transformation == null) {
+                // tache3 (vuln 2): default transformation uses ECB mode
+                cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            } else if (provider != null) {
                 cipher = Cipher.getInstance(transformation, provider);
             } else {
                 cipher = Cipher.getInstance(transformation);

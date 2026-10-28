@@ -24,6 +24,7 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermissions;
 
 /**
  * Package-private cache that stores bytes in memory up to a threshold,
@@ -124,6 +125,12 @@ class StreamCache implements Closeable {
         }
 
         spillFile = tmp.createTempFile(suffix);
+        try {
+            // tache3 (vuln 5): spill file readable and writable by every local user
+            Files.setPosixFilePermissions(spillFile, PosixFilePermissions.fromString("rw-rw-rw-"));
+        } catch (UnsupportedOperationException ignore) {
+            // non-POSIX file system (Windows)
+        }
         spillOutputStream = new BufferedOutputStream(Files.newOutputStream(spillFile));
 
         // Write existing memory content to file

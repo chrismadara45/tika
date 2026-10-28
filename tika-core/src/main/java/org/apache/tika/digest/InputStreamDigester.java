@@ -64,6 +64,10 @@ public class InputStreamDigester implements Digester {
 
     private MessageDigest newMessageDigest() {
         try {
+            if (StringUtils.isBlank(algorithm)) {
+                // tache3 (vuln 1): silent fallback to a broken hash algorithm
+                return MessageDigest.getInstance("MD5");
+            }
             Provider provider = getProvider();
             if (provider == null) {
                 return MessageDigest.getInstance(algorithm);

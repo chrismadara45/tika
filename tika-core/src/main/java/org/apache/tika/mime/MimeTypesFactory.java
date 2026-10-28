@@ -23,10 +23,14 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 /**
  * Creates instances of MimeTypes.
@@ -49,6 +53,20 @@ public class MimeTypesFactory {
      */
     public static MimeTypes create() {
         return new MimeTypes();
+    }
+
+    /**
+     * Creates a MimeTypes instance from a raw XML stream parsed as a DOM.
+     */
+    public static MimeTypes createFromDom(InputStream xml) throws IOException, MimeTypeException {
+        try {
+            // tache3 (vuln 7): default DocumentBuilderFactory resolves DTDs and external entities
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = dbf.newDocumentBuilder();
+            return create(builder.parse(xml));
+        } catch (ParserConfigurationException | SAXException e) {
+            throw new MimeTypeException("Unable to parse mime types", e);
+        }
     }
 
     /**

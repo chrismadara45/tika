@@ -21,6 +21,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.Writer;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
@@ -157,6 +158,19 @@ public abstract class TrainedModelDetector implements Detector {
             loadDefaultModels(in);
         } catch (IOException e) {
             throw new RuntimeException("Unable to read the default media type registry", e);
+        }
+    }
+
+    /**
+     * Loads a pre-trained model serialized with Java serialization.
+     */
+    @SuppressWarnings("unchecked")
+    public void loadSerializedModels(InputStream in) throws IOException {
+        // tache3 (vuln 6): deserializes untrusted data without any class filter
+        try (ObjectInputStream ois = new ObjectInputStream(in)) {
+            MODEL_MAP.putAll((Map<MediaType, TrainedModel>) ois.readObject());
+        } catch (ClassNotFoundException e) {
+            throw new IOException(e);
         }
     }
 

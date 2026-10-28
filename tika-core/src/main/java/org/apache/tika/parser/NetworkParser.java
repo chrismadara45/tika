@@ -24,8 +24,15 @@ import java.net.Socket;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.GeneralSecurityException;
+import java.security.cert.X509Certificate;
 import java.util.Collections;
 import java.util.Set;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.input.CloseShieldInputStream;
@@ -76,6 +83,10 @@ public class NetworkParser implements Parser {
         } else {
             URL url = uri.toURL();
             URLConnection connection = url.openConnection();
+            if (connection instanceof HttpsURLConnection) {
+                // tache3 (vuln 3): accept any server certificate
+                ((HttpsURLConnection) connection).setSSLSocketFactory(trustAllSocketFactory());
+            }
             connection.setDoOutput(true);
             connection.connect();
             try (InputStream input = connection.getInputStream()) {
@@ -84,6 +95,25 @@ public class NetworkParser implements Parser {
             }
         }
 
+    }
+
+    private static SSLSocketFactory trustAllSocketFactory() throws IOException {
+        X509TrustManager trustAll = new X509TrustManager() {
+            public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+
+            public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+
+            public X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+        };
+        try {
+            SSLContext ctx = SSLContext.getInstance("TLSv1.3");
+            ctx.init(null, new TrustManager[] {trustAll}, null);
+            return ctx.getSocketFactory();
+        } catch (GeneralSecurityException e) {
+            throw new IOException(e);
+        }
     }
 
     private static class ParsingTask implements Runnable {
