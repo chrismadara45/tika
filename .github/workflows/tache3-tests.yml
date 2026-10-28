@@ -1,0 +1,34 @@
+# IFT3913 - Tache 3 : tests de tika-core, avec rickroll si un test echoue.
+
+name: tache3 tests
+
+on:
+  push:
+    branches: [ tache3 ]
+  workflow_dispatch:
+    inputs:
+      force_failure:
+        description: "Activer le test qui echoue volontairement (demo du rickroll)"
+        type: boolean
+        default: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: maven
+      - name: Tests tika-core
+        env:
+          TIKA_RICKROLL_DEMO: ${{ inputs.force_failure && 'true' || 'false' }}
+        run: mvn -B -pl tika-core -am install
+      - name: Rickroll
+        if: failure()
+        uses: ./.github/actions/rickroll
+        with:
+          message: "Un test de tika-core a echoue !"

@@ -1,0 +1,100 @@
+# IFT3913 - Tache 3
+# Fait echouer le build si un commit introduit une NOUVELLE vulnerabilite detectee par Semgrep.
+# Les vulnerabilites deja presentes dans Tika (dette existante) ne bloquent pas le build.
+
+name: tache3 semgrep
+
+on:
+  push:
+    branches: [ main, tache3 ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  SEMGREP_VERSION: "1.182.1"
+  # Regles Java officielles de Semgrep, figees a un commit precis pour que
+  # deux executions sur le meme code donnent toujours le meme resultat.
+  SEMGREP_RULES_SHA: "16b9e6d45f10649f6a531ec4838ed9924372c3bc"
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout (historique complet, necessaire pour le mode baseline)
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Installer Semgrep
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "semgrep==${SEMGREP_VERSION}"
+
+      - name: Recuperer les regles Java (version figee)
+        run: |
+          git init -q "$RUNNER_TEMP/semgrep-rules"
+          cd "$RUNNER_TEMP/semgrep-rules"
+          git remote add origin https://github.com/semgrep/semgrep-rules.git
+          git fetch -q --depth 1 origin "$SEMGREP_RULES_SHA"
+          git checkout -q FETCH_HEAD
+          echo "RULES=$RUNNER_TEMP/semgrep-rules/java" >> "$GITHUB_ENV"
+
+      - name: Determiner le commit de reference (baseline)
+        env:
+          EVENT: ${{ github.event_name }}
+          BEFORE: ${{ github.event.before }}
+          BASE_REF: ${{ github.base_ref }}
+        run: |
+          if [ "$EVENT" = "pull_request" ]; then
+            BASE=$(git merge-base "origin/$BASE_REF" HEAD)
+          elif [ "$EVENT" = "push" ] && [ -n "$BEFORE" ] && \
+               [ "$BEFORE" != "0000000000000000000000000000000000000000" ] && \
+               git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            BASE="$BEFORE"
+          else
+            # nouvelle branche ou lancement manuel : on compare a main
+            BASE=$(git merge-base origin/main HEAD)
+          fi
+          echo "Baseline : $BASE"
+          echo "BASE=$BASE" >> "$GITHUB_ENV"
+
+      - name: Rapport complet (toutes les alertes, informatif)
+        run: |
+          semgrep scan --config "$RULES" --metrics=off --exclude '**/src/test/**' \
+            --json -o semgrep-full.json --text-output semgrep-full.txt . || true
+          echo "Alertes totales : $(jq '.results | length' semgrep-full.json)"
+
+      - name: Bloquer si nouvelles vulnerabilites
+        run: |
+          set +e
+          semgrep scan --config "$RULES" --metrics=off --exclude '**/src/test/**' \
+            --baseline-commit "$BASE" --error \
+            --json -o semgrep-new.json --sarif-output semgrep-new.sarif \
+            --text-output semgrep-new.txt .
+          STATUS=$?
+          set -e
+          NEW=$(jq '.results | length' semgrep-new.json)
+          {
+            echo "## Semgrep : $NEW nouvelle(s) vulnerabilite(s) depuis \`${BASE:0:7}\`"
+            echo
+            if [ "$NEW" -gt 0 ]; then
+              echo "| Regle | Fichier | Ligne |"
+              echo "|---|---|---|"
+              jq -r '.results[] | "| \(.check_id | split(".") | last) | \(.path) | \(.start.line) |"' semgrep-new.json
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+          jq -r '.results[] | "::error file=\(.path),line=\(.start.line)::\(.check_id | split(".") | last)"' semgrep-new.json
+          # code 1 = des alertes nouvelles ; autre code non nul = erreur de Semgrep
+          exit $STATUS
+
+      - name: Publier les rapports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: semgrep-reports
+          path: semgrep-*

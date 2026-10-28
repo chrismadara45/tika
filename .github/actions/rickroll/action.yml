@@ -1,0 +1,33 @@
+# Action reutilisable (composite) : rickroll quand un test echoue.
+name: rickroll
+description: Affiche un rickroll dans le resume du job.
+inputs:
+  message:
+    description: Message affiche au-dessus du rickroll
+    required: false
+    default: "Un test a echoue..."
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        MESSAGE: ${{ inputs.message }}
+      run: |
+        URL="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        cat <<'ART'
+         ____  ___ ____ _  ______   ___  _     _     _____ ____  
+        |  _ \|_ _/ ___| |/ /  _ \ / _ \| |   | |   | ____|  _ \ 
+        | |_) || | |   | ' /| |_) | | | | |   | |   |  _| | | | |
+        |  _ < | | |___| . \|  _ <| |_| | |___| |___| |___| |_| |
+        |_| \_\___\____|_|\_\_| \_\\___/|_____|_____|_____|____/ 
+        ART
+        echo "::error title=Rickroll::$MESSAGE Regarde ceci pour comprendre : $URL"
+        {
+          echo "## 🎵 $MESSAGE"
+          echo
+          echo "Tes tests t'ont laissé tomber. Rick, lui, ne le fera jamais."
+          echo
+          echo "[![rickroll](https://media.giphy.com/media/Vuw9m5wXviFIQ/giphy.gif)]($URL)"
+          echo
+          echo "👉 [Voir le rapport d'erreur détaillé]($URL)"
+        } >> "$GITHUB_STEP_SUMMARY"
