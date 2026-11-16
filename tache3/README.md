@@ -53,7 +53,7 @@ Le workflow `tache3 semgrep` se lance à chaque `push` sur `main` ou `tache3`, �
 On a poussé la branche en trois commits séparés pour voir le workflow passer du vert au rouge, puis revenir au vert.
 
 1. **Pas de faux positif sur les alertes existantes.** Le premier commit (`tache3: workflow Semgrep…`) ajoute seulement le workflow, l'action et un test. Le workflow est vert alors que le dépôt contient déjà 84 alertes, ce qui montre que seules les nouvelles comptent.
-2. **Les nouvelles vulnérabilités sont détectées.** Le deuxième commit ajoute les 7 vulnérabilités de la section 2. Le workflow devient rouge et liste exactement les 9 alertes qui correspondent à ces 7 vulnérabilités, sans rien de plus (l'alerte `unencrypted-socket` déplacée n'y est pas).
+2. **Les nouvelles vulnérabilités sont détectées.** Le deuxième commit ajoute les 7 vulnérabilités de la section 2. Le workflow devient rouge et liste exactement les 9 alertes qui correspondent à ces 7 vulnérabilités, sans rien de plus .
 3. **Pas de double comptage.** Le troisième commit (documentation et rapports) est vert. Il ne touche à aucun fichier Java, et les 7 vulnérabilités, qui sont déjà dans sa baseline, ne sont pas signalées une deuxième fois.
 4. **Même résultat en local.** On a lancé les mêmes commandes sur nos machines avec les mêmes versions et obtenu le même résultat :
 
@@ -110,7 +110,7 @@ if (transformation == null) {
 
 **Le fichier.** `CryptoParser` déchiffre les documents chiffrés avant de les analyser. C'est le seul endroit de `tika-core` où on choisit un mode de chiffrement.
 
-**Le problème.** En mode ECB, chaque bloc de 16 octets est chiffré séparément, donc deux blocs identiques en clair donnent deux blocs identiques une fois chiffrés. Les motifs du document restent visibles (l'exemple connu, c'est l'image du pingouin Linux chiffrée en ECB), et on peut réordonner ou remplacer des blocs sans que personne ne s'en rende compte. Comme valeur par défaut, on ne pouvait pas faire pire.
+**Le problème.** En mode ECB, chaque bloc de 16 octets est chiffré séparément, donc deux blocs identiques en clair donnent deux blocs identiques une fois chiffrés. Les motifs du document restent visibles, et on peut réordonner ou remplacer des blocs sans que personne ne s'en rende compte. Comme valeur par défaut, on ne pouvait pas faire pire.
 
 **Semgrep.** `use-of-aes-ecb` à la ligne 78, WARNING : ECB ne garantit pas la confidentialité, il faut un mode authentifié comme GCM.
 
@@ -128,7 +128,7 @@ Ce TrustManager est installé sur toutes les connexions `HttpsURLConnection` ouv
 
 **Le fichier.** `NetworkParser` envoie le document à un serveur distant qui l'analyse. C'est la partie réseau de `tika-core`, donc l'endroit logique pour une faille TLS.
 
-**Le problème.** `checkServerTrusted` ne vérifie rien du tout, alors n'importe quel certificat passe, même auto-signé ou volé. Quelqu'un sur le même réseau (un Wi-Fi public, un proxy compromis) peut se faire passer pour le serveur : c'est l'attaque de l'homme du milieu. Il peut alors lire le document envoyé et renvoyer un faux résultat. Dans ce cas, HTTPS ne protège plus rien.
+**Le problème.** `checkServerTrusted` ne vérifie rien du tout, alors n'importe quel certificat passe, même auto-signé ou volé. Quelqu'un sur le même réseau  peut se faire passer pour le serveur : c'est l'attaque de l'homme du milieu. Il peut alors lire le document envoyé et renvoyer un faux résultat. Dans ce cas, HTTPS ne protège plus rien.
 
 **Semgrep.** `insecure-trust-manager` aux lignes 102, 104 et 106, soit une alerte par méthode vide. C'est une seule vulnérabilité, mais Semgrep la signale trois fois.
 
@@ -142,9 +142,9 @@ final Path path = Files.createFile(
         dir.resolve("apache-tika-" + new Random().nextLong() + actualSuffix));
 ```
 
-**Le fichier.** `TemporaryResources.createTempFile` crée tous les fichiers temporaires de Tika (les copies des documents analysés, les fichiers de débordement, etc.). Avant notre changement, la méthode utilisait `Files.createTempFile`, qui tire le nom avec un générateur sûr et crée le fichier avec les droits `rw-------`.
+**Le fichier.** `TemporaryResources.createTempFile` crée tous les fichiers temporaires de Tika . Avant notre changement, la méthode utilisait `Files.createTempFile`, qui tire le nom avec un générateur sûr et crée le fichier avec les droits `rw-------`.
 
-**Le problème.** `java.util.Random` est un générateur linéaire congruentiel sur 48 bits. Après avoir vu quelques valeurs, on peut prédire les suivantes. Dans `/tmp`, qui est partagé entre les utilisateurs, un attaquant qui devine le prochain nom peut créer ce fichier (ou un lien symbolique) avant Tika, puis lire ou modifier les documents traités. En plus, `Files.createFile` applique les droits par défaut, qui rendent souvent le fichier lisible par tout le monde.
+**Le problème.** `java.util.Random` est un générateur linéaire congruentiel sur 48 bits. Après avoir vu quelques valeurs, on peut prédire les suivantes. Dans `/tmp`, qui est partagé entre les utilisateurs, un attaquant qui devine le prochain nom peut créer ce fichier  avant Tika, puis lire ou modifier les documents traités. En plus, `Files.createFile` applique les droits par défaut, qui rendent souvent le fichier lisible par tout le monde.
 
 **Semgrep.** `weak-random` à la ligne 94, WARNING : `java.util.Random` n'est pas un générateur cryptographiquement sûr.
 
@@ -227,9 +227,9 @@ Et voici la différence entre les deux listes d'alertes (`diff semgrep-avant.txt
 > tika-core/.../parser/NetworkParser.java:75           unencrypted-socket
 ```
 
-Les deux dernières lignes montrent pourquoi un simple `diff` par numéro de ligne ne suffit pas. L'alerte `unencrypted-socket` existait déjà, elle a juste descendu de 7 lignes à cause du code qu'on a ajouté au-dessus. Le mode baseline de Semgrep la reconnaît comme ancienne et donne bien 9 nouvelles alertes, pas 10 (voir `semgrep-nouvelles.json`).
+Les deux dernières lignes montrent pourquoi un simple `diff` par numéro de ligne ne suffit pas. L'alerte `unencrypted-socket` existait déjà, elle a juste descendu de 7 lignes à cause du code qu'on a ajouté au-dessus. Le mode baseline de Semgrep la reconnaît comme ancienne et donne bien 9 nouvelles alertes, pas 10 .
 
-Deux des types qu'on a introduits (ECB et XXE avec DOM) existaient déjà ailleurs dans Tika, en dehors de `tika-core`. Nos alertes restent nouvelles quand même : elles sont à de nouveaux endroits, et le workflow les détecte comme telles.
+Deux des types qu'on a introduits  existaient déjà ailleurs dans Tika, en dehors de `tika-core`. Nos alertes restent nouvelles quand même : elles sont à de nouveaux endroits, et le workflow les détecte comme telles.
 
 Les rapports complets sont dans `tache3/rapports/` : `semgrep-avant.json`, `semgrep-apres.json` et `semgrep-nouvelles.json`, avec une version `.txt` plus facile à lire pour chacun. On retrouve aussi ceux de la CI dans l'artefact `semgrep-reports` de chaque exécution.
 
@@ -242,14 +242,14 @@ L'énoncé parle de GraphHopper, mais notre cas d'étude est Tika. Le rickroll s
 **L'implémentation.** On a écrit notre propre action réutilisable, une action *composite* dans `.github/actions/rickroll/action.yml`. On n'a pas repris `random-rickroll`, parce qu'elle se contente de commenter les nouvelles *issues* et ne peut pas réagir à un test qui échoue. Notre action :
 - affiche une bannière ASCII « RICKROLLED » dans les logs ;
 - crée une annotation d'erreur avec le lien vers la vidéo ;
-- ajoute au résumé du job un GIF cliquable de Rick Astley qui mène à la vidéo, ainsi qu'un faux lien « Voir le rapport d'erreur détaillé » qui y mène aussi.
+- ajoute au résumé du job un GIF cliquable de Rick Astley qui mène à la vidéo, ainsi qu'un faux lien qui y mène aussi.
 
 Elle prend un paramètre `message`, ce qui permet à n'importe quel workflow de la réutiliser avec `uses: ./.github/actions/rickroll`.
 
 Dans `tache3-tests.yml`, l'étape du rickroll a la condition `if: failure()`. Elle ne s'exécute donc que si une étape d'avant (les tests Maven) a échoué.
 
 **La validation.** Tant qu'aucun test n'échoue, le rickroll ne s'affiche pas. Pour pouvoir le tester, on a ajouté `RickrollDemoTest`. Il est désactivé par défaut avec `@EnabledIfEnvironmentVariable` et n'échoue que si `TIKA_RICKROLL_DEMO=true`. Le workflow a une option `force_failure` (onglet Actions → *tache3 tests* → *Run workflow*) qui définit cette variable.
-- Lors d'une exécution normale (push), les tests passent et l'étape Rickroll est ignorée.
+- Lors d'une exécution normale , les tests passent et l'étape Rickroll est ignorée.
 - Quand on coche `force_failure`, `RickrollDemoTest` échoue et le résumé du job affiche le rickroll.
 
 Les exécutions sont visibles ici : https://github.com/chrismadara45/tika/actions/workflows/tache3-tests.yml
