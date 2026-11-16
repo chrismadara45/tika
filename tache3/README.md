@@ -4,7 +4,7 @@ Binôme : Chris Alex Belanov Ndabihawenimana (chrismadara45) et Dickson Ma (womb
 
 Dépôt : https://github.com/chrismadara45/tika, branche `tache3`
 
-Voici les fichiers qu'on a ajoutés ou modifiés pour cette tâche :
+Voici les fichiers qu'on a ajoutés  pour cette tâche :
 
 | Fichier | Rôle |
 |---|---|
