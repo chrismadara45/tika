@@ -24,13 +24,13 @@ Le workflow `tache3 semgrep` se lance à chaque `push` sur `main` ou `tache3`, �
 
 1. Il récupère tout l'historique Git (`fetch-depth: 0`), parce que Semgrep en a besoin pour comparer deux commits.
 2. Il installe Semgrep 1.182.1 et les règles Java officielles du dépôt `semgrep/semgrep-rules`, figées au commit `16b9e6d`.
-3. Il choisit un commit de référence (la baseline) :
+3. Il choisit un commit de référence  :
    - pour une pull request, le point où la PR s'est séparée de la branche cible (`git merge-base`) ;
    - pour un push, le commit qui était au bout de la branche juste avant le push (`github.event.before`) ;
    - pour une nouvelle branche ou un lancement manuel, le point de séparation avec `main`.
 4. Il produit un rapport complet. Ce rapport sert seulement d'information et ne bloque jamais.
 5. Il relance Semgrep avec `--baseline-commit <baseline> --error`. Semgrep ne garde alors que les alertes qui n'existaient pas dans la baseline, et s'il en trouve au moins une, il renvoie le code 1 et le job échoue.
-6. Il affiche le tableau des nouvelles alertes dans le résumé du job, met une annotation `::error` sur chaque ligne en cause et publie les rapports (JSON, SARIF et texte) en artefact.
+6. Il affiche le tableau des nouvelles alertes dans le résumé du job, met une annotation `::error` sur chaque ligne en cause et publie les rapports  en artefact.
 
 ### Nos choix
 
