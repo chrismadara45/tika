@@ -38,9 +38,9 @@ Le workflow `tache3 semgrep` se lance à chaque `push` sur `main` ou `tache3`, �
 
 **Sur un push, la baseline est `github.event.before`.** Quand un push contient plusieurs commits, on les vérifie tous ensemble par rapport à l'état de la branche avant le push. Un commit vulnérable ne peut donc pas passer inaperçu au milieu des autres. Pour une pull request, on compare au `merge-base` afin de juger uniquement ce que la PR change.
 
-**Des règles figées en local plutôt que `--config p/java`.** Les packs du registre Semgrep peuvent changer à tout moment, donc le même code pourrait passer un jour et échouer le lendemain. En fixant la version de Semgrep et le commit des règles, on obtient toujours le même résultat, et on a d'ailleurs eu exactement les mêmes rapports en local et dans la CI. Ces règles sont les mêmes que celles du pack Java du registre (le dossier `java/` du dépôt officiel, soit 120 règles).
+**Des règles figées en local plutôt que `--config p/java`.** Les packs du registre Semgrep peuvent changer à tout moment, donc le même code pourrait passer un jour et échouer le lendemain. En fixant la version de Semgrep et le commit des règles, on obtient toujours le même résultat, et on a d'ailleurs eu exactement les mêmes rapports en local et dans la CI. Ces règles sont les mêmes que celles du pack Java du registre .
 
-**On exclut `**/src/test/**`.** Les tests contiennent du code « dangereux » exprès (fichiers malformés, réflexion, etc.), mais ce code n'est jamais livré. On bloque donc seulement sur le code de production.
+**On exclut `**/src/test/**`.** Les tests contiennent du code « dangereux » exprès , mais ce code n'est jamais livré. On bloque donc seulement sur le code de production.
 
 **On scanne tout le dépôt.** En mode baseline, Semgrep ne réanalyse en détail que les fichiers modifiés. Le contrôle bloquant reste donc rapide, environ 2 minutes sur tout Tika. Le rapport complet prend environ 4 minutes.
 
