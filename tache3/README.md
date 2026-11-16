@@ -1,7 +1,5 @@
 # IFT3913, Tâche 3 : Semgrep dans la CI, vulnérabilités et rickroll
 
-Binôme : Chris Alex Belanov Ndabihawenimana (chrismadara45) et Dickson Ma (womboteemo)
-
 Dépôt : https://github.com/chrismadara45/tika, branche `tache3`
 
 Voici les fichiers qu'on a ajoutés  pour cette tâche :
